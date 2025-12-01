@@ -18,7 +18,10 @@ export default function Purchases() {
   const { theme, purchases } = useAppContext();
   const router = useRouter();
 
-  const totalSpent = purchases.reduce((sum, purchase) => sum + purchase.price, 0);
+  const totalSpent = purchases.reduce(
+    (sum, purchase) => sum + purchase.price,
+    0
+  );
 
   const formatDate = (date: Date) => {
     const d = new Date(date);
@@ -30,54 +33,55 @@ export default function Purchases() {
     return `${day}/${month}/${year} às ${hours}:${minutes}`;
   };
 
-  const renderPurchase = ({ item }: { item: typeof purchases[0] }) => {
-    // Usa "food" como categoria padrão
+  const renderPurchase = ({ item }: { item: (typeof purchases)[0] }) => {
     const categoryId = item.categoryId || "food";
     const route = `/market/${categoryId}/${item.id}`;
-    
+
     return (
       <TouchableOpacity
         style={[styles.purchaseCard, { backgroundColor: theme.cardBackground }]}
         onPress={() => router.push(route as any)}
         activeOpacity={0.7}
       >
-      {item.image && (
-        <Image
-          source={{ uri: item.image }}
-          style={styles.purchaseImage}
-          resizeMode="cover"
-        />
-      )}
-      <View style={styles.purchaseInfo}>
-        <Text
-          style={[styles.purchaseName, { color: theme.text }]}
-          numberOfLines={2}
-        >
-          {item.productName}
-        </Text>
-        <View style={styles.purchaseMeta}>
-          <View style={styles.purchaseDateContainer}>
-            <MaterialIcons
-              name="schedule"
-              size={14}
-              color={theme.inputPlaceholder}
-              style={styles.dateIcon}
-            />
-            <Text style={[styles.purchaseDate, { color: theme.inputPlaceholder }]}>
-              {formatDate(item.date)}
-            </Text>
+        {item.image && (
+          <Image
+            source={{ uri: item.image }}
+            style={styles.purchaseImage}
+            resizeMode="cover"
+          />
+        )}
+        <View style={styles.purchaseInfo}>
+          <Text
+            style={[styles.purchaseName, { color: theme.text }]}
+            numberOfLines={2}
+          >
+            {item.productName}
+          </Text>
+          <View style={styles.purchaseMeta}>
+            <View style={styles.purchaseDateContainer}>
+              <MaterialIcons
+                name="schedule"
+                size={14}
+                color={theme.inputPlaceholder}
+                style={styles.dateIcon}
+              />
+              <Text
+                style={[styles.purchaseDate, { color: theme.inputPlaceholder }]}
+              >
+                {formatDate(item.date)}
+              </Text>
+            </View>
           </View>
+          <Text style={[styles.purchasePrice, { color: theme.priceText }]}>
+            R$ {formatPrice(item.price)}
+          </Text>
         </View>
-        <Text style={[styles.purchasePrice, { color: theme.priceText }]}>
-          R$ {formatPrice(item.price)}
-        </Text>
-      </View>
-      <MaterialIcons
-        name="chevron-right"
-        size={24}
-        color={theme.inputPlaceholder}
-      />
-    </TouchableOpacity>
+        <MaterialIcons
+          name="chevron-right"
+          size={24}
+          color={theme.inputPlaceholder}
+        />
+      </TouchableOpacity>
     );
   };
 
@@ -100,7 +104,9 @@ export default function Purchases() {
           <Text style={[styles.emptyTitle, { color: theme.text }]}>
             Nenhuma compra realizada
           </Text>
-          <Text style={[styles.emptySubtitle, { color: theme.inputPlaceholder }]}>
+          <Text
+            style={[styles.emptySubtitle, { color: theme.inputPlaceholder }]}
+          >
             Suas compras aparecerão aqui quando você comprar produtos no mercado
           </Text>
           <TouchableOpacity
@@ -122,11 +128,13 @@ export default function Purchases() {
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
-      {/* Header Stats */}
       <View
         style={[
           styles.header,
-          { backgroundColor: theme.cardBackground, borderBottomColor: theme.inputBorder },
+          {
+            backgroundColor: theme.cardBackground,
+            borderBottomColor: theme.inputBorder,
+          },
         ]}
       >
         <View style={styles.statsContainer}>
@@ -138,7 +146,9 @@ export default function Purchases() {
               {purchases.length}
             </Text>
           </View>
-          <View style={[styles.statDivider, { backgroundColor: theme.inputBorder }]} />
+          <View
+            style={[styles.statDivider, { backgroundColor: theme.inputBorder }]}
+          />
           <View style={styles.statItem}>
             <Text style={[styles.statLabel, { color: theme.inputPlaceholder }]}>
               Total gasto
@@ -150,7 +160,6 @@ export default function Purchases() {
         </View>
       </View>
 
-      {/* Purchases List */}
       <FlatList
         data={purchases}
         renderItem={renderPurchase}
@@ -288,4 +297,3 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
   },
 });
-

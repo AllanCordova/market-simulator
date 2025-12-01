@@ -1,0 +1,4 @@
+appId: dev.expo.eastestsexample
+---
+- launchApp
+- assertVisible: "Welcome!"
